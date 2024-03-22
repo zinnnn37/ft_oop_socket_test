@@ -1,12 +1,19 @@
 import { socket } from './socket.js';
+import { navigate } from './navigate.js';
 
 export default class Home {
   constructor($target) {
     this.$target = $target;
     console.log('Home');
-    this.$target.innerHTML = `<h1>Home</h2>`;
-    console.log(socket);
 
-    socket.send('Hello');
+    this.$target.innerHTML = `<h1>Home</h1><div id='test'>test</div>`;
+
+    const $test = document.querySelector('#test');
+    $test.addEventListener('click', () => {
+      navigate('/test');
+      socket.send('HOME');
+    });
+
+    socket.send('HOME');
   }
 }
