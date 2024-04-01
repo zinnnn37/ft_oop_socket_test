@@ -14,6 +14,12 @@ function initWebSocket() {
   };
 }
 
+function getMessage() {
+  socket.onmessage = (e) => {
+    console.log(e);
+  };
+}
+
 initWebSocket();
 
-export { initWebSocket, socket };
+export { initWebSocket, getMessage, socket };

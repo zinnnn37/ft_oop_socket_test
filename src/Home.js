@@ -1,8 +1,14 @@
-import { initWebSocket, socket } from './socket.js';
+import { initWebSocket, getMessage, socket } from './socket.js';
 import { navigate } from './navigate.js';
 
 export default class Home {
   constructor($target) {
+    // getMessage();
+
+    socket.onmessage = (e) => {
+      console.log(e);
+    };
+
     this.$target = $target;
 
     if (!socket || socket.readyState !== WebSocket.OPEN) {
