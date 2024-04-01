@@ -6,7 +6,7 @@ export default class Test {
     // getMessage();
 
     socket.onmessage = (e) => {
-      console.log(e);
+      console.log(e.data);
     };
 
     this.$target = $target;
