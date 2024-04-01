@@ -1,4 +1,4 @@
-import { initWebSocket, getMessage, socket } from './socket.js';
+import { initWebSocket, checkHeartbeat, socket } from './socket.js';
 import { navigate } from './navigate.js';
 
 export default class Home {
@@ -6,7 +6,11 @@ export default class Home {
     // getMessage();
 
     socket.onmessage = (e) => {
-      console.log(e.data);
+      if (!checkHeartbeat(e)) {
+        const data = JSON.parse(e.data);
+
+        console.log(data.message);
+      }
     };
 
     this.$target = $target;
@@ -15,8 +19,6 @@ export default class Home {
       initWebSocket();
     }
 
-    console.log('Home');
-
     this.$target.innerHTML = `<h1>Home</h1><div id='test'>test</div>`;
 
     const $test = document.querySelector('#test');
@@ -24,6 +26,6 @@ export default class Home {
       navigate('/test');
     });
 
-    socket.send('HOME');
+    socket.send(JSON.stringify({ type: 'message', message: 'HOME' }));
   }
 }

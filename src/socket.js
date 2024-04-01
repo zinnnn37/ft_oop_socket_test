@@ -1,4 +1,5 @@
 let socket = null;
+let heartbeatInterval = null;
 
 function initWebSocket() {
   if (!socket || socket.readyState !== WebSocket.OPEN) {
@@ -7,6 +8,12 @@ function initWebSocket() {
 
   socket.onopen = () => {
     console.log('Connected to the server');
+
+    heartbeatInterval = setInterval(() => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'heartbeat', message: 'ping' }));
+      }
+    }, 10000);
   };
 
   socket.onclose = () => {
@@ -14,12 +21,17 @@ function initWebSocket() {
   };
 }
 
-function getMessage() {
-  socket.onmessage = (e) => {
-    console.log(e);
-  };
+function checkHeartbeat(e) {
+  const data = JSON.parse(e.data);
+
+  if (data.type === 'heartbeat') {
+    console.log('Pong: Received pong from the server');
+
+    return true;
+  }
+  return false;
 }
 
 initWebSocket();
 
-export { initWebSocket, getMessage, socket };
+export { initWebSocket, checkHeartbeat, socket };
