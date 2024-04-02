@@ -26,6 +26,8 @@ export default class Test {
       navigate('/');
     });
 
-    socket.send(JSON.stringify({ type: 'message', message: 'TEST' }));
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'message', message: 'TEST' }));
+    }
   }
 }

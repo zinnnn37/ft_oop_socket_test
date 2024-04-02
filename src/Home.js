@@ -26,6 +26,8 @@ export default class Home {
       navigate('/test');
     });
 
-    socket.send(JSON.stringify({ type: 'message', message: 'HOME' }));
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: 'message', message: 'HOME' }));
+    }
   }
 }
